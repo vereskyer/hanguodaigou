@@ -41,11 +41,8 @@ class AuthenticatedSessionController extends Controller
         // };
 
         if (tenancy()->initialized) { // 当前是 Tenant 环境
-            if ($request->user()->hasRole('admin')) {
-                return redirect()->intended(route('tenant.admin.dashboard', absolute: false));
-            } else {
-                return redirect()->intended(route('tenant.user.dashboard', absolute: false));
-            }
+
+            return redirect()->intended(route('tenant.dashboard', absolute: false));
         } else { // 当前是主域名环境
             if ($request->user()->hasRole('admin')) {
                 return redirect()->intended(route('dashboard', absolute: false));

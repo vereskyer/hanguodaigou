@@ -34,13 +34,7 @@ Route::middleware([
     // admin routes
 
     Route::middleware(['auth', 'verified', 'role:admin'])->group(function () {
-        // Dashboard route
-        Route::get('/dashboard', function () {
-            return Inertia::render('Tenant/Dashboard', [
-                'user' => auth()->user(),
-            ]);
-        })->name('tenant.admin.dashboard');
-    
+
         // Product routes
         Route::prefix('products')->group(function () {
             Route::get('/', [ProductController::class, 'index'])
@@ -52,23 +46,26 @@ Route::middleware([
             Route::post('/central/{id}/import', [ProductController::class, 'importCentralProduct'])
                 ->name('tenant.products.import'); // 導入中央產品
         });
+
+         // User routes
+
+            Route::resource('users', UserController::class);
     });
 
-    // 所有用戶可訪問的 dashboard
-    Route::get('/user/dashboard', function () {
-        return Inertia::render('Tenant/UserDashboard');
-    })
-        ->name('tenant.user.dashboard');
 
     Route::middleware('auth')->group(function () {
+        // Dashboard route
+        Route::get('/dashboard', function () {
+            return Inertia::render('Tenant/Dashboard', [
+                'user' => auth()->user(),
+            ]);
+        })->name('tenant.dashboard');
+
         Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
         Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
         Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 
-        // User routes
-        Route::group(['middleware' => ['role:admin']], function () {
-            Route::resource('users', UserController::class);
-        });
+
     });
 
 

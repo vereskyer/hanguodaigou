@@ -34,10 +34,10 @@ onMounted(() => {
                     </svg>
                     <span class="sr-only">Toggle sidebar</span>
                 </button>
-                <NavLink 
-                    :href="route('tenant.admin.dashboard')" 
+                <NavLink
+                    :href="route('tenant.dashboard')"
                     :preserve-scroll="false"
-                    :active="route().current('tenant.admin.dashboard')">
+                    :active="route().current('tenant.dashboard')">
                     <span class="self-center text-2xl font-semibold whitespace-nowrap dark:text-white">Dashboard</span>
                 </NavLink>
 
