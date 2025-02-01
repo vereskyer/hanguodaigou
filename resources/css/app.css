@@ -1,0 +1,7 @@
+@import '@vueform/multiselect/themes/default.css';
+@import '/node_modules/flowbite-vue/dist/index.css';
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
