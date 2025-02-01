@@ -2,6 +2,8 @@
 import { Head, Link } from '@inertiajs/vue3';
 import { onMounted } from 'vue'
 import { initFlowbite } from 'flowbite'
+import Footer from './Layouts/Footer.vue';
+import Hero from './Layouts/Hero.vue';
 
 const props = defineProps({
     canLogin: {
@@ -67,8 +69,7 @@ onMounted(() => {
                             alt="Logo" class="h-8" />
                     </div>
                     <nav v-if="canLogin" class="-mx-3 flex flex-1 justify-end">
-                        <Link v-if="$page.props.auth.user"
-                            :href="route('tenant.dashboard')"
+                        <Link v-if="$page.props.auth.user" :href="route('tenant.dashboard')"
                             class="rounded-md px-3 py-2 text-black ring-1 ring-transparent transition hover:text-black/70 focus:outline-none focus-visible:ring-[#FF2D20] dark:text-white dark:hover:text-white/80 dark:focus-visible:ring-white">
                         Dashboard
                         </Link>
@@ -88,6 +89,9 @@ onMounted(() => {
                 </header>
 
                 <main class="mt-6">
+                    <!-- Hero -->
+                    <Hero />
+
                     <section class="bg-gray-50 py-8 antialiased dark:bg-gray-900 md:py-12">
                         <div class="mx-auto max-w-screen-xl px-4 2xl:px-0">
                             <!-- Heading & Filters -->
@@ -1361,9 +1365,7 @@ onMounted(() => {
                     </section>
                 </main>
 
-                <footer class="py-16 text-center text-sm text-black dark:text-white/70">
-                    Laravel v{{ laravelVersion }} (PHP v{{ phpVersion }})
-                </footer>
+                <Footer />
             </div>
         </div>
     </div>
