@@ -1,5 +1,7 @@
 <script setup>
 import { Head, Link } from '@inertiajs/vue3';
+import { onMounted } from 'vue'
+import { initFlowbite } from 'flowbite'
 
 const props = defineProps({
     canLogin: {
@@ -33,7 +35,7 @@ const getProductImage = (product) => {
         return `/storage/${product.image}`;
     } else {
         // 如果图片来自租户的存储
-        return `${window.location.origin}/tenancy/assets/${product.image}`;
+        return `/tenancy/assets/${product.image}`;
     }
 };
 
@@ -44,6 +46,11 @@ function handleImageError() {
     document.getElementById('docs-card-content')?.classList.add('!flex-row');
     document.getElementById('background')?.classList.add('!hidden');
 }
+
+// initialize components based on data attribute selectors
+onMounted(() => {
+    initFlowbite();
+})
 </script>
 
 <template>
