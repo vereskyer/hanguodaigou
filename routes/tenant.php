@@ -34,6 +34,8 @@ Route::middleware([
                 ->name('tenant.products.index'); // 獲取所有產品
             Route::post('/products', [ProductController::class, 'store'])
                 ->name('tenant.products.store'); // 創建產品
+            Route::delete('/products/{product}', [ProductController::class, 'destroy'])
+                ->name('tenant.products.destroy'); // 刪除產品
             Route::get('/central', [ProductController::class, 'listAvailableCentralProducts'])
                 ->name('tenant.products.central'); // 獲取可導入的中央產品
             Route::post('/central/{id}/import', [ProductController::class, 'importCentralProduct'])

@@ -1,7 +1,7 @@
 <script setup>
 import TenantAuthenticatedLayout from '../Layouts/TenantAuthenticatedLayout.vue';
 import PrimaryButton from '../Components/PrimaryButton.vue';
-import { useForm } from '@inertiajs/vue3';
+import { useForm, router } from '@inertiajs/vue3';
 import NavLink from '../Components/NavLink.vue';
 import PaginationLinks from '@/Components/PaginationLinks.vue';
 import InputField from '@/Components/InputField.vue';
@@ -42,6 +42,19 @@ const getProductImage = (product) => {
     } else {
         // 如果图片来自租户的存储
         return `${window.location.origin}/tenancy/assets/${product.image}`;
+    }
+};
+
+const deleteProduct = (product) => {
+    if (confirm(`Are you sure you want to delete ${product.name}?`)) {
+        router.delete(route('tenant.products.destroy', product.id), {
+            onSuccess: () => {
+                alert('Product deleted successfully!');
+            },
+            onError: (errors) => {
+                console.error('Failed to delete product:', errors);
+            }
+        });
     }
 };
 
@@ -178,7 +191,7 @@ const closeModal = () => {
                                             Edit
                                         </NavLink>
 
-                                        <button @click.prevent="" type="button"
+                                        <button @click.prevent="deleteProduct(product)" type="button"
                                             class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-red-100 text-red-800">
                                             Delete
                                         </button>
