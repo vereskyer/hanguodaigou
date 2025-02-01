@@ -22,21 +22,14 @@ Route::middleware([
     InitializeTenancyByDomain::class,
     PreventAccessFromCentralDomains::class,
 ])->group(function () {
-    Route::get('/', function () {
-        return Inertia::render('Tenant/Welcome', [
-            'canLogin' => Route::has('login'),
-            'canRegister' => Route::has('register'),
-            'laravelVersion' => Application::VERSION,
-            'phpVersion' => PHP_VERSION,
-        ]);
-    });
+    Route::get('/', [ProductController::class,'homepage'])->name('tenant.index');
 
     // admin routes
 
     Route::middleware(['auth', 'verified', 'role:admin'])->group(function () {
 
         // Product routes
-        Route::prefix('products')->group(function () {
+        Route::prefix('/dashboard/products')->group(function () {
             Route::get('/', [ProductController::class, 'index'])
                 ->name('tenant.products.index'); // 獲取所有產品
             Route::post('/products', [ProductController::class, 'store'])

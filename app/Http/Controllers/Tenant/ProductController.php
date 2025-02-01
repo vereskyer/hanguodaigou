@@ -9,9 +9,31 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Storage;
 use Inertia\Inertia;
+use Illuminate\Foundation\Application;
+use Illuminate\Support\Facades\Route;
 
 class ProductController extends Controller
 {
+    public function homepage(Request $request)
+    {
+        // 获取产品并按创建时间降序排列，同时分页
+        $products = Product::orderBy('created_at', 'desc')->paginate(20);
+        // 为每个产品添加完整的图片 URL
+        $products->getCollection()->transform(function ($product) {
+            $product->image_url = $product->image
+                ? tenant_asset('products/' . basename($product->image))
+                : null; // 如果没有图片，设置为 null
+            return $product;
+        });
+        return Inertia::render('Tenant/Welcome', [
+            'canLogin' => Route::has('login'),
+            'canRegister' => Route::has('register'),
+            'laravelVersion' => Application::VERSION,
+            'phpVersion' => PHP_VERSION,
+            'products'=> $products,
+        ]);
+    }
+
     public function index()
     {
         // 获取产品并按创建时间降序排列，同时分页
@@ -74,7 +96,7 @@ class ProductController extends Controller
 
     public function listAvailableCentralProducts()
     {
-        
+
         // Get imported central product IDs first
         $importedProductIds = Product::where('is_central_product', true)
             ->pluck('central_product_id');
@@ -84,7 +106,7 @@ class ProductController extends Controller
             ->where('is_active', true)
             ->whereNotIn('id', $importedProductIds)
             ->latest()
-            ->paginate(5);                                                                                                                                                                 
+            ->paginate(5);
 
         return Inertia::render('Tenant/Product/CentralProduct', [
             'products' => $centralProducts
